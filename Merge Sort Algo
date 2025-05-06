@@ -1,0 +1,103 @@
+/**
+ * @file merge_sort.cpp
+ * @brief Implementation of Merge Sort algorithm using C++ and std::vector
+ *
+ * Merge Sort is a classic divide-and-conquer algorithm with O(n log n) time complexity.
+ * This implementation sorts an array of integers in ascending order.
+ *
+ * Key Steps:
+ * 1. Divide: Recursively split the array into halves until base case is reached.
+ * 2. Conquer: Merge the sorted halves back together using a temporary array.
+ *
+ * Author: Santunu Kaysar
+ * Date: 2025
+ */
+
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+/**
+ * @brief Merges two sorted subarrays of arr.
+ * 
+ * Merges the subarrays arr[left..mid] and arr[mid+1..right] into a sorted order.
+ * 
+ * @param arr   Reference to the array
+ * @param left  Starting index of the left subarray
+ * @param mid   Ending index of the left subarray
+ * @param right Ending index of the right subarray
+ */
+void merge(vector<int>& arr, int left, int mid, int right) {
+    vector<int> temp;
+    int i = left;
+    int j = mid + 1;
+
+    // Merge elements into temp in sorted order
+    while (i <= mid && j <= right) {
+        if (arr[i] <= arr[j]) {
+            temp.push_back(arr[i++]);
+        } else {
+            temp.push_back(arr[j++]);
+        }
+    }
+
+    // Append remaining elements of left subarray
+    while (i <= mid) {
+        temp.push_back(arr[i++]);
+    }
+
+    // Append remaining elements of right subarray
+    while (j <= right) {
+        temp.push_back(arr[j++]);
+    }
+
+    // Copy sorted elements back to original array
+    for (int k = 0; k < temp.size(); ++k) {
+        arr[left + k] = temp[k];
+    }
+}
+
+/**
+ * @brief Recursively sorts an array using Merge Sort.
+ * 
+ * @param arr   Reference to the array
+ * @param left  Starting index of the array section to sort
+ * @param right Ending index of the array section to sort
+ */
+void mergeSort(vector<int>& arr, int left, int right) {
+    if (left < right) {
+        // Find the middle index
+        int mid = left + (right - left) / 2;
+
+        // Recursively sort the two halves
+        mergeSort(arr, left, mid);
+        mergeSort(arr, mid + 1, right);
+
+        // Merge the sorted halves
+        merge(arr, left, mid, right);
+    }
+}
+
+/**
+ * @brief Driver code
+ */
+int main() {
+    vector<int> arr = {38, 27, 43, 3, 9, 82, 10};
+
+    cout << "Original array: ";
+    for (int val : arr) {
+        cout << val << " ";
+    }
+    cout << endl;
+
+    mergeSort(arr, 0, arr.size() - 1);
+
+    cout << "Sorted array:   ";
+    for (int val : arr) {
+        cout << val << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
